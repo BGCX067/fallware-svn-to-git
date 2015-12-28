@@ -1,0 +1,33 @@
+#summary Notes for installing and configuring development systems
+
+= Introduction =
+
+Notes for setting up repeatable development environments.
+
+Use virtual machines.  Virtual Box is working fine so far on 64-bit Windows 7.  For Linux systems, I'm using KVM and QEMU at present.
+
+= Installation =
+== RHEL/CentOS 5 ==
+
+Although I presently have a Red Hat account, it's easier to deal with CentOS for repo access, etc.  Although you could do a net install, there is less chance of an error if you just grap the CentOS DVD ISO you want and have your VM boot from it.
+
+A [http://code.google.com/p/fallware/source/browse/trunk/devtools/rhel5-dev-kickstart.cfg kickstart file] for installation has been checked into svn.  You'll need to uncomment and modify the partitioning scheme for the target system.  The install includes a basic system with dev tools like yum-utils, rpmdevtools, cscope, etc.
+
+= System Prep =
+
+== RHEL/CentOS 5 ==
+
+I updated the kernel to 2.6.18-274.7.1.  Download the source for this kernel and install it in your home directory.
+
+<code>
+ yumdownloader http://vault.centos.org/5.7/updates/SRPMS/kernel-2.6.18-274.7.1.el5.src.rpm
+
+{ignore this line - wiki formatting bug makes it part of URL}
+ rpmdev-setuptree
+ rpm -i kernel-2.6.18-274.7.1.el5.src.rpm
+ rpmbuild -bp rpmbuild/SPECS/kernel.spec
+</code>
+
+Patched kernel source tree is now available in '''rpmbuild/BUILD'''.
+
+Install a debug kernel to get the most of the LDD3 book.  The Kconfig parameters for various debug options are out of date in that book, so take the short cut and install the pre-built debug kernel from CentOS.
